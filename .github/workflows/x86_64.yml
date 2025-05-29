@@ -16,16 +16,12 @@ jobs:
         run: |
           brew install automake libtool pkg-config libplist libusbmuxd libirecovery openssl
 
-      - name: Run autogen and configure
+      - name: Run Build script
         run: |
-          ./autogen.sh
-          ./configure --with-openssl=/usr/local/opt/openssl
-
-      - name: Build futurerestore
-        run: make -j$(sysctl -n hw.ncpu)
+          ./build.sh
 
       - name: Upload futurerestore binary
         uses: actions/upload-artifact@v4
         with:
           name: futurerestore-macos-x86_64
-          path: ./build.sh
+          path: ./futurerestore
