@@ -1,0 +1,31 @@
+name: Manual Build of futurerestore for macOS
+
+on:
+  workflow_dispatch:  # Enables manual trigger from GitHub UI
+
+jobs:
+  build:
+    name: Build futurerestore for macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies via Homebrew
+        run: |
+          brew install automake libtool pkg-config libplist libusbmuxd libirecovery openssl
+
+      - name: Run autogen and configure
+        run: |
+          ./autogen.sh
+          ./configure --with-openssl=/usr/local/opt/openssl
+
+      - name: Build futurerestore
+        run: make -j$(sysctl -n hw.ncpu)
+
+      - name: Upload futurerestore binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: futurerestore-macos-x86_64
+          path: ./futurerestore
