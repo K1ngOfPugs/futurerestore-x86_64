@@ -14,8 +14,18 @@ jobs:
 
       - name: Install dependencies via Homebrew
         run: |
-          brew install automake libtool pkg-config libplist libusbmuxd libirecovery openssl
-
+          brew update
+          brew install \
+            openssl@3 \
+            libzip \
+            libpng \
+            libplist \
+            libusbmuxd \
+            libirecovery \
+            libimobiledevice \
+            libimobiledevice-glue \
+            img4tool
+          brew link --force openssl@3
       - name: Run Build script
         run: |
           ./build.sh
