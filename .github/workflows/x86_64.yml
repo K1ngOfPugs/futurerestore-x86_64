@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: futurerestore-macos-x86_64
-          path: ./futurerestore
+          path: ./build.sh
