@@ -14,18 +14,36 @@ jobs:
 
       - name: Install dependencies via Homebrew
         run: |
-          brew update
-          brew install \
-            openssl@3 \
-            libzip \
-            libpng \
-            libplist \
-            libusbmuxd \
-            libirecovery \
-            libimobiledevice \
-            libimobiledevice-glue \
-            img4tool
-          brew link --force openssl@3
+          brew install automake libtool pkg-config cmake openssl libzip libplist libusbmuxd libimobiledevice
+
+      - name: Clone and build dependencies
+        run: |
+          mkdir deps && cd deps
+
+          git clone https://github.com/tihmstar/libgeneral
+          cd libgeneral && ./autogen.sh && ./configure && make -j && sudo make install
+          cd ..
+
+          git clone https://github.com/tihmstar/libfragmentzip
+          cd libfragmentzip && ./autogen.sh && ./configure && make -j && sudo make install
+          cd ..
+
+          git clone https://github.com/tihmstar/libimg4tool
+          cd libimg4tool && ./autogen.sh && ./configure && make -j && sudo make install
+          cd ..
+
+          git clone https://github.com/tihmstar/libinsn
+          cd libinsn && ./autogen.sh && ./configure && make -j && sudo make install
+          cd ..
+
+          git clone https://github.com/tihmstar/liboffsetfinder64
+          cd liboffsetfinder64 && ./autogen.sh && ./configure && make -j && sudo make install
+          cd ..
+
+          git clone https://github.com/tihmstar/libipatcher
+          cd libipatcher && ./autogen.sh && ./configure && make -j && sudo make install
+          cd ..
+        
       - name: Run Build script
         run: |
           ./build.sh
